@@ -2,6 +2,13 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as ArrowRightIcon } from "../assets/svg/keyboardArrowRightIcon.svg";
 import visibilityIcon from "../assets/svg/visibilityIcon.svg";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { db } from "../firebase.config";
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -20,14 +27,42 @@ function SignUp() {
     }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      updateProfile(auth.currentUser, {
+        displayName: name,
+      });
+
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password;
+
+      formDataCopy.timestamp = serverTimestamp()
+      await setDoc(doc(db, 'users', user.uid), formDataCopy)
+
+      navigate("/");
+    } catch (error) {
+      console.log("error");
+    }
+  };
+
   return (
     <>
       <div className="pageContainer">
         <header>
           <p className="pageHeader">Welcome back</p>
         </header>
-        <form>
-        <input
+        <form onSubmit={handleSubmit}>
+          <input
             type="text"
             placeholder="Name"
             id="name"
@@ -73,7 +108,7 @@ function SignUp() {
         </form>
         {/* Google OAuth component goes here */}
         <Link to="/sign-in" className="registerLink">
-         Allready have account? Sign in then!
+          Allready have account? Sign in then!
         </Link>
       </div>
     </>
