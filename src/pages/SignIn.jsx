@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as ArrowRightIcon } from "../assets/svg/keyboardArrowRightIcon.svg";
 import visibilityIcon from "../assets/svg/visibilityIcon.svg";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,9 +16,28 @@ function SignIn() {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.id]: e.target.value,
-      
-    }))
+    }));
+  };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const auth = getAuth();
+
+    const userCredenital = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+  if(userCredenital.user ) {
+    navigate('/')
+  }
+    } catch (error) {
+      console.log('error');
+    }
+
+    
   };
 
   return (
@@ -26,7 +46,7 @@ function SignIn() {
         <header>
           <p className="pageHeader">Welcome back</p>
         </header>
-        <form>
+        <form onSubmit={handleSubmit}>
           <input
             type="emali"
             placeholder="Email"
@@ -64,9 +84,9 @@ function SignIn() {
           </div>
         </form>
         {/* Google OAuth component goes here */}
-        <Link to='/sign-up' className="registerLink" > 
-        Don't have account? Sign up!
-        </Link> 
+        <Link to="/sign-up" className="registerLink">
+          Don't have account? Sign up!
+        </Link>
       </div>
     </>
   );
