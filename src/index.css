@@ -140,14 +140,14 @@ button {
 }
 
 .navbar {
-  position: fixed;
+  position: static;
   left: 0;
   bottom: 0;
   right: 0;
   height: 85px;
   background-color: #ffffff;
   z-index: 1000;
-  display: fl ex;
+  display: flex;
   justify-content: center;
   align-items: center;
 }

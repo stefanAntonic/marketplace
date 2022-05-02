@@ -9,6 +9,8 @@ import {
 } from "firebase/auth";
 import { db } from "../firebase.config";
 import { setDoc, doc, serverTimestamp } from "firebase/firestore";
+import { toast } from "react-toastify";
+import OAuth from "../components/OAuth";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
@@ -46,12 +48,12 @@ function SignUp() {
       const formDataCopy = { ...formData };
       delete formDataCopy.password;
 
-      formDataCopy.timestamp = serverTimestamp()
-      await setDoc(doc(db, 'users', user.uid), formDataCopy)
+      formDataCopy.timestamp = serverTimestamp();
+      await setDoc(doc(db, "users", user.uid), formDataCopy);
 
       navigate("/");
     } catch (error) {
-      console.log("error");
+      toast.error("Something went wrong, try again.");
     }
   };
 
@@ -106,7 +108,7 @@ function SignUp() {
             </button>
           </div>
         </form>
-        {/* Google OAuth component goes here */}
+        <OAuth />
         <Link to="/sign-in" className="registerLink">
           Allready have account? Sign in then!
         </Link>
