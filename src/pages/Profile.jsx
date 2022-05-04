@@ -1,9 +1,11 @@
 import { getAuth, updateProfile } from "firebase/auth";
 import { doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { db } from "../firebase.config";
+import arrowRight from "../assets/svg/keyboardArrowRightIcon.svg";
+import homeIcon from "../assets/svg/homeIcon.svg";
 
 function Profile() {
   const auth = getAuth();
@@ -23,20 +25,18 @@ function Profile() {
 
   const handleSubmit = async () => {
     try {
-      if(auth.currentUser.name !== name){
-        
+      if (auth.currentUser.name !== name) {
         await updateProfile(auth.currentUser, {
           displayName: name,
-        })
+        });
 
-        const userRef = doc(db, 'users', auth.currentUser.uid)
+        const userRef = doc(db, "users", auth.currentUser.uid);
         await updateDoc(userRef, {
-          name
-        })
-
+          name,
+        });
       }
     } catch (error) {
-      toast.error('Something went wrong during update. Try again.')
+      toast.error("Something went wrong during update. Try again.");
     }
   };
   const handleChange = (e) => {
@@ -89,6 +89,12 @@ function Profile() {
             />
           </form>
         </div>
+
+        <Link to="/create-listing" className="createListing">
+          <img src={homeIcon} alt="home" />
+          <p>Sell or rent your home</p>
+          <img src={arrowRight} alt="arrow right" />
+        </Link>
       </main>
     </div>
   );
