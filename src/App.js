@@ -11,6 +11,8 @@ import PrivateRoute from "./components/PrivateRoute";
 import ForgotPassword from "./pages/ForgotPassword";
 import Category from "./pages/Category";
 import CreateListings from "./pages/CreateListings";
+import Listing from "./pages/Listing";
+import Contact from "./pages/Contact";
 
 
 
@@ -23,6 +25,8 @@ function App() {
         <Route path="/category/:categoryName" element={<Category />} />
         <Route path="/offers" element={<Offers />}/>
         <Route path='/create-listing' element={<CreateListings />} />
+        <Route path="/category/:categoryName/:listingId" element={<Listing />} />
+        <Route path='/contact/:ownerId' element={<Contact />} />
         <Route path="/profile" element={<PrivateRoute />}>
         <Route path="/profile" element={<Profile />}/>
           </Route>
