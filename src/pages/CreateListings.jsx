@@ -12,7 +12,7 @@ import { v4 as uuid } from "uuid";
 import Spinner from "../components/Spinner";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { async } from "@firebase/util";
+
 
 function CreateListings() {
   const [loading, setLoading] = useState(false);
@@ -66,7 +66,7 @@ function CreateListings() {
       isMounted.current = false;
     };
   }, [isMounted]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
